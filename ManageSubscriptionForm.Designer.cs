@@ -37,6 +37,7 @@
             this.subscribeBtn = new System.Windows.Forms.Button();
             this.unsubscribeBtn = new System.Windows.Forms.Button();
             this.cancelBtn = new System.Windows.Forms.Button();
+            this.statusLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // notifyByEmailCheckBox
@@ -53,7 +54,7 @@
             // 
             this.emailTextBox.Location = new System.Drawing.Point(125, 40);
             this.emailTextBox.Name = "emailTextBox";
-            this.emailTextBox.Size = new System.Drawing.Size(247, 23);
+            this.emailTextBox.Size = new System.Drawing.Size(340, 23);
             this.emailTextBox.TabIndex = 1;
             // 
             // emailResultLabel
@@ -79,7 +80,7 @@
             // 
             this.phoneTextBox.Location = new System.Drawing.Point(125, 91);
             this.phoneTextBox.Name = "phoneTextBox";
-            this.phoneTextBox.Size = new System.Drawing.Size(247, 23);
+            this.phoneTextBox.Size = new System.Drawing.Size(340, 23);
             this.phoneTextBox.TabIndex = 4;
             // 
             // phoneResultLabel
@@ -100,6 +101,7 @@
             this.subscribeBtn.TabIndex = 6;
             this.subscribeBtn.Text = "Subscribe";
             this.subscribeBtn.UseVisualStyleBackColor = true;
+            this.subscribeBtn.Click += new System.EventHandler(this.subscribeBtn_Click);
             // 
             // unsubscribeBtn
             // 
@@ -120,12 +122,23 @@
             this.cancelBtn.TabIndex = 8;
             this.cancelBtn.Text = "Cancel";
             this.cancelBtn.UseVisualStyleBackColor = true;
+            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.AutoSize = true;
+            this.statusLabel.Location = new System.Drawing.Point(12, 215);
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(22, 15);
+            this.statusLabel.TabIndex = 9;
+            this.statusLabel.Text = "---";
             // 
             // ManageSubscriptionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(398, 214);
+            this.ClientSize = new System.Drawing.Size(515, 266);
+            this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.unsubscribeBtn);
             this.Controls.Add(this.subscribeBtn);
@@ -153,5 +166,6 @@
         private Button subscribeBtn;
         private Button unsubscribeBtn;
         private Button cancelBtn;
+        private Label statusLabel;
     }
 }

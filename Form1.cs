@@ -6,5 +6,18 @@ namespace BrenBaga_Lab2
         {
             InitializeComponent();
         }
+
+
+
+        private void manageSubscriptionBtn_Click(object sender, EventArgs e)
+        {
+            ManageSubscriptionForm frm = new ManageSubscriptionForm();
+            frm.ShowDialog();
+        }
+
+        private void exitBtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
