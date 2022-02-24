@@ -15,13 +15,15 @@ namespace BrenBaga_Lab2
     {
         HashSet<SendViaEmail> emailSubscriptionsSet = new HashSet<SendViaEmail>();
         HashSet<SendViaMobile> phoneNumSubscriptionsSet = new HashSet<SendViaMobile>();
-        Publisher publisher = new Publisher();
+        Publisher publisher;
 
 
 
         public ManageSubscriptionForm()
         {
             InitializeComponent();
+
+            this.publisher = new Publisher();
         }
 
 
@@ -133,6 +135,36 @@ namespace BrenBaga_Lab2
 
 
 
+        private static SendViaEmail? getEmailSubscriptionFromSet(string email, HashSet<SendViaEmail> subscriptionSet)
+        {
+            foreach (var subscription in subscriptionSet)
+            {
+                if (subscription.EmailAddr.Equals(email))
+                {
+                    return subscription;
+                }
+            }
+
+            return null;
+        }
+
+
+
+        private static SendViaMobile? getSmsSubscriptionFromSet(string phoneNum, HashSet<SendViaMobile> subscriptionSet)
+        {
+            foreach (var subscription in subscriptionSet)
+            {
+                if (subscription.CellPhone.Equals(phoneNum))
+                {
+                    return subscription;
+                }
+            }
+
+            return null;
+        }
+
+
+
         private static bool doesEmailExistInSet(string email, HashSet<SendViaEmail> subscriptionSet)
         {
             foreach (var subscription in subscriptionSet)
@@ -193,6 +225,70 @@ namespace BrenBaga_Lab2
             }
 
             return false;
+        }
+
+
+
+        private void unsubscribeBtn_Click(object sender, EventArgs e)
+        {
+            // Reset labels.
+            emailResultLabel.Text = "";
+            phoneResultLabel.Text = "";
+            statusLabel.Text = "";
+
+
+            string newStatusLabel = "";
+
+
+            // Unsubscribe by email
+            if (notifyByEmailCheckBox.Checked)
+            {
+                string email = emailTextBox.Text;
+
+                if (doesEmailExistInSet(email, emailSubscriptionsSet))
+                {
+                    // Unsubscribe the contact, then remove from subscriptionSet.
+                    SendViaEmail? subscriptionByEmail = getEmailSubscriptionFromSet(email, emailSubscriptionsSet);
+
+                    subscriptionByEmail?.Unsubscribe(this.publisher);
+                    emailSubscriptionsSet.RemoveWhere(subscription => subscription.EmailAddr.Equals(email));
+
+                    newStatusLabel += $"\nSuccesfully unsubscribed {email}!";
+                }
+                else
+                {
+                    newStatusLabel += $"\nOops, {email} does not exist.";
+
+                }
+
+            }
+
+
+            // Unsubscribe by sms
+            if (notifyBySmsCheckBox.Checked)
+            {
+                string phoneNum = phoneTextBox.Text;
+
+                if (doesPhoneNumExistInSet(phoneNum, phoneNumSubscriptionsSet))
+                {
+                    // Unsubscribe the contact, then remove from subscriptionSet.
+                    SendViaMobile? subscriptionBySms = getSmsSubscriptionFromSet(phoneNum, phoneNumSubscriptionsSet);
+
+                    subscriptionBySms?.Unsubscribe(this.publisher);
+                    phoneNumSubscriptionsSet.RemoveWhere(subscription => subscription.CellPhone.Equals(phoneNum));
+
+                    newStatusLabel += $"\nSuccesfully unsubscribed {phoneNum}!";
+                }
+                else
+                {
+                    newStatusLabel += $"\nOops, {phoneNum} does not exist.";
+
+                }
+
+            }
+
+
+            statusLabel.Text = newStatusLabel;
         }
     }
 }
