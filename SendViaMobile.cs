@@ -6,40 +6,16 @@ using System.Threading.Tasks;
 
 namespace BrenBaga_Lab2
 {
-    internal class SendViaMobile
+    internal class SendViaMobile : SendViaType
     {
-        public String CellPhone { get; set; }
-
-
-
-        public SendViaMobile() { }
-
-
-
-        public SendViaMobile(String phone)
+        public SendViaMobile(String contact) : base(contact)
         {
-            CellPhone = phone;
+
         }
 
-
-
-        private void sendMessage(string msg)
+        public override void send(string msg)
         {
-            Console.WriteLine("The message " + "\"" + msg + "\" was texted to " + CellPhone);
-        }
-
-
-
-        public void Subscribe(Publisher pub)
-        {
-            pub.publishmsg += sendMessage;
-        }
-
-
-
-        public void Unsubscribe(Publisher pub)
-        {
-            pub.publishmsg -= sendMessage;
+            Console.WriteLine("The message " + "\"" + msg + "\" was texted to " + Contact);
         }
     }
 }

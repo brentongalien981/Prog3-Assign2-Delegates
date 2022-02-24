@@ -13,17 +13,10 @@ namespace BrenBaga_Lab2
 {
     public partial class ManageSubscriptionForm : Form
     {
-        HashSet<SendViaEmail> emailSubscriptionsSet = new HashSet<SendViaEmail>();
-        HashSet<SendViaMobile> phoneNumSubscriptionsSet = new HashSet<SendViaMobile>();
-        Publisher publisher;
-
-
 
         public ManageSubscriptionForm()
         {
             InitializeComponent();
-
-            this.publisher = new Publisher();
         }
 
 
@@ -37,258 +30,139 @@ namespace BrenBaga_Lab2
 
         private void subscribeBtn_Click(object sender, EventArgs e)
         {
-            bool isEmailValid = true;
-            bool isPhoneNumValid = true;
-            bool didAllValidationsPass = true;
-
-
             // Reset labels.
             emailResultLabel.Text = "";
             phoneResultLabel.Text = "";
             statusLabel.Text = "";
 
+            emailResultLabel.ForeColor = Color.Red;
+            phoneResultLabel.ForeColor = Color.Red;
 
-            // Validate email.
+
+            // Process email.
             if (notifyByEmailCheckBox.Checked)
             {
-                isEmailValid = this.validateEmail();
+                SubscriptionResult subscriptionResult = TheSubscriptionManager.ProcessSubscription("email", emailTextBox.Text);
+
+                // If email is subscribed.
+                if (subscriptionResult.IsSuccessful)
+                {
+                    emailResultLabel.ForeColor = Color.Green;                    
+                }
+
+                emailResultLabel.Text = subscriptionResult.ResultMsg;
             }
 
 
-            // Validate phoneNum.
+            // Process mobile.
             if (notifyBySmsCheckBox.Checked)
             {
-                isPhoneNumValid = this.validatePhoneNum();
-            }
+                SubscriptionResult subscriptionResult = TheSubscriptionManager.ProcessSubscription("mobile", phoneTextBox.Text);
 
-
-            // Notify user if email is invalid.
-            if (notifyByEmailCheckBox.Checked && !isEmailValid)
-            {
-                didAllValidationsPass = false;
-                emailResultLabel.Text = "Invalid email.";
-            }
-
-
-            // Notify user if phoneNum is invalid.
-            if (notifyBySmsCheckBox.Checked && !isPhoneNumValid)
-            {
-                didAllValidationsPass = false;
-                phoneResultLabel.Text = "Invalid number. Should be in format: 111-222-4444";
-            }
-
-
-            // If there's no validation errors, proceed.
-            if (didAllValidationsPass)
-            {
-                string newStatusLabel = "";
-
-
-                // Subscribe by email
-                if (notifyByEmailCheckBox.Checked)
+                // If mobile is subscribed.
+                if (subscriptionResult.IsSuccessful)
                 {
-                    string email = emailTextBox.Text;
-
-                    if (doesEmailExistInSet(email, emailSubscriptionsSet))
-                    {
-                        newStatusLabel += $"\nOops, {email} already exists.";
-                    }
-                    else
-                    {
-                        // Add the contact to subscriptionSet, then subscribe.
-                        SendViaEmail subscriptionByEmail = new SendViaEmail(email);
-                        emailSubscriptionsSet.Add(subscriptionByEmail);
-                        subscriptionByEmail.Subscribe(this.publisher);
-
-                        newStatusLabel += $"\nSuccesfully subscribed {email}!";
-
-                    }
-
+                    phoneResultLabel.ForeColor = Color.Green;
                 }
 
-
-                // Subscribe by sms.
-                if (notifyBySmsCheckBox.Checked)
-                {
-                    string phoneNum = phoneTextBox.Text;
-
-                    if (doesPhoneNumExistInSet(phoneNum, phoneNumSubscriptionsSet))
-                    {
-                        newStatusLabel += $"\nOops, {phoneNum} already exists.";
-                    }
-                    else
-                    {
-                        // Add the contact to subscriptionSet, then subscribe.
-                        SendViaMobile subscriptionBySms = new SendViaMobile(phoneNum);
-                        phoneNumSubscriptionsSet.Add(subscriptionBySms);
-                        subscriptionBySms.Subscribe(this.publisher);
-
-                        newStatusLabel += $"\nSuccesfully subscribed {phoneNum}!";
-
-                    }
-                }
-
-
-                statusLabel.Text = newStatusLabel;
+                phoneResultLabel.Text = subscriptionResult.ResultMsg;
             }
+
+
         }
 
 
 
-        private static SendViaEmail? getEmailSubscriptionFromSet(string email, HashSet<SendViaEmail> subscriptionSet)
-        {
-            foreach (var subscription in subscriptionSet)
-            {
-                if (subscription.EmailAddr.Equals(email))
-                {
-                    return subscription;
-                }
-            }
+        //private static SendViaEmail? getEmailSubscriptionFromSet(string email, HashSet<SendViaEmail> subscriptionSet)
+        //{
+        //    foreach (var subscription in subscriptionSet)
+        //    {
+        //        if (subscription.EmailAddr.Equals(email))
+        //        {
+        //            return subscription;
+        //        }
+        //    }
 
-            return null;
-        }
-
-
-
-        private static SendViaMobile? getSmsSubscriptionFromSet(string phoneNum, HashSet<SendViaMobile> subscriptionSet)
-        {
-            foreach (var subscription in subscriptionSet)
-            {
-                if (subscription.CellPhone.Equals(phoneNum))
-                {
-                    return subscription;
-                }
-            }
-
-            return null;
-        }
+        //    return null;
+        //}
 
 
 
-        private static bool doesEmailExistInSet(string email, HashSet<SendViaEmail> subscriptionSet)
-        {
-            foreach (var subscription in subscriptionSet)
-            {
-                if (subscription.EmailAddr.Equals(email))
-                {
-                    return true;
-                }
-            }
+        //private static SendViaMobile? getSmsSubscriptionFromSet(string phoneNum, HashSet<SendViaMobile> subscriptionSet)
+        //{
+        //    foreach (var subscription in subscriptionSet)
+        //    {
+        //        if (subscription.CellPhone.Equals(phoneNum))
+        //        {
+        //            return subscription;
+        //        }
+        //    }
 
-            return false;
-        }
-
-
-
-        private static bool doesPhoneNumExistInSet(string phoneNum, HashSet<SendViaMobile> subscriptionSet)
-        {
-            foreach (var subscription in subscriptionSet)
-            {
-                if (subscription.CellPhone.Equals(phoneNum))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-
-
-        private bool validatePhoneNum()
-        {
-            string phoneNum = phoneTextBox.Text;
-
-            Regex regex = new Regex(@"^(\d{3})-(\d{3})-(\d{4})$");
-            Match match = regex.Match(phoneNum);
-
-            if (match.Success)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-
-
-        private bool validateEmail()
-        {
-            string email = emailTextBox.Text;
-
-            Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-            Match match = regex.Match(email);
-
-            if (match.Success)
-            {
-                return true;
-            }
-
-            return false;
-        }
+        //    return null;
+        //}
 
 
 
         private void unsubscribeBtn_Click(object sender, EventArgs e)
         {
-            // Reset labels.
-            emailResultLabel.Text = "";
-            phoneResultLabel.Text = "";
-            statusLabel.Text = "";
+            //    // Reset labels.
+            //    emailResultLabel.Text = "";
+            //    phoneResultLabel.Text = "";
+            //    statusLabel.Text = "";
 
 
-            string newStatusLabel = "";
+            //    string newStatusLabel = "";
 
 
-            // Unsubscribe by email
-            if (notifyByEmailCheckBox.Checked)
-            {
-                string email = emailTextBox.Text;
+            //    // Unsubscribe by email
+            //    if (notifyByEmailCheckBox.Checked)
+            //    {
+            //        string email = emailTextBox.Text;
 
-                if (doesEmailExistInSet(email, emailSubscriptionsSet))
-                {
-                    // Unsubscribe the contact, then remove from subscriptionSet.
-                    SendViaEmail? subscriptionByEmail = getEmailSubscriptionFromSet(email, emailSubscriptionsSet);
+            //        if (doesEmailExistInSet(email, emailSubscriptionsSet))
+            //        {
+            //            // Unsubscribe the contact, then remove from subscriptionSet.
+            //            SendViaEmail? subscriptionByEmail = getEmailSubscriptionFromSet(email, emailSubscriptionsSet);
 
-                    subscriptionByEmail?.Unsubscribe(this.publisher);
-                    emailSubscriptionsSet.RemoveWhere(subscription => subscription.EmailAddr.Equals(email));
+            //            subscriptionByEmail?.Unsubscribe(this.publisher);
+            //            emailSubscriptionsSet.RemoveWhere(subscription => subscription.EmailAddr.Equals(email));
 
-                    newStatusLabel += $"\nSuccesfully unsubscribed {email}!";
-                }
-                else
-                {
-                    newStatusLabel += $"\nOops, {email} does not exist.";
+            //            newStatusLabel += $"\nSuccesfully unsubscribed {email}!";
+            //        }
+            //        else
+            //        {
+            //            newStatusLabel += $"\nOops, {email} does not exist.";
 
-                }
+            //        }
 
-            }
-
-
-            // Unsubscribe by sms
-            if (notifyBySmsCheckBox.Checked)
-            {
-                string phoneNum = phoneTextBox.Text;
-
-                if (doesPhoneNumExistInSet(phoneNum, phoneNumSubscriptionsSet))
-                {
-                    // Unsubscribe the contact, then remove from subscriptionSet.
-                    SendViaMobile? subscriptionBySms = getSmsSubscriptionFromSet(phoneNum, phoneNumSubscriptionsSet);
-
-                    subscriptionBySms?.Unsubscribe(this.publisher);
-                    phoneNumSubscriptionsSet.RemoveWhere(subscription => subscription.CellPhone.Equals(phoneNum));
-
-                    newStatusLabel += $"\nSuccesfully unsubscribed {phoneNum}!";
-                }
-                else
-                {
-                    newStatusLabel += $"\nOops, {phoneNum} does not exist.";
-
-                }
-
-            }
+            //    }
 
 
-            statusLabel.Text = newStatusLabel;
+            //    // Unsubscribe by sms
+            //    if (notifyBySmsCheckBox.Checked)
+            //    {
+            //        string phoneNum = phoneTextBox.Text;
+
+            //        if (doesPhoneNumExistInSet(phoneNum, phoneNumSubscriptionsSet))
+            //        {
+            //            // Unsubscribe the contact, then remove from subscriptionSet.
+            //            SendViaMobile? subscriptionBySms = getSmsSubscriptionFromSet(phoneNum, phoneNumSubscriptionsSet);
+
+            //            subscriptionBySms?.Unsubscribe(this.publisher);
+            //            phoneNumSubscriptionsSet.RemoveWhere(subscription => subscription.CellPhone.Equals(phoneNum));
+
+            //            newStatusLabel += $"\nSuccesfully unsubscribed {phoneNum}!";
+            //        }
+            //        else
+            //        {
+            //            newStatusLabel += $"\nOops, {phoneNum} does not exist.";
+
+            //        }
+
+            //    }
+
+
+            //    statusLabel.Text = newStatusLabel;
         }
     }
 }

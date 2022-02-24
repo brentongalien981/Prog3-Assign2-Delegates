@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace BrenBaga_Lab2
 {
-    internal class SendViaEmail : SendViaType
+    internal class TheSubscriptionObserver
     {
-        public SendViaEmail(String contact) : base(contact)
-        {
-
-        }
     }
 }
