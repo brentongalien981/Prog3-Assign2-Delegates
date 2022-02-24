@@ -13,21 +13,32 @@ namespace BrenBaga_Lab2
 {
     public partial class ManageSubscriptionForm : Form
     {
+        HashSet<SendViaEmail> emailSubscriptionsSet = new HashSet<SendViaEmail>();
+        HashSet<SendViaMobile> phoneNumSubscriptionsSet = new HashSet<SendViaMobile>();
+        Publisher publisher = new Publisher();
+
+
+
         public ManageSubscriptionForm()
         {
             InitializeComponent();
         }
+
+
 
         private void cancelBtn_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
+
+
         private void subscribeBtn_Click(object sender, EventArgs e)
         {
             bool isEmailValid = true;
             bool isPhoneNumValid = true;
             bool didAllValidationsPass = true;
+
 
             // Reset labels.
             emailResultLabel.Text = "";
@@ -65,30 +76,92 @@ namespace BrenBaga_Lab2
             }
 
 
+            // If there's no validation errors, proceed.
             if (didAllValidationsPass)
             {
+                string newStatusLabel = "";
+
+
                 // Subscribe by email
                 if (notifyByEmailCheckBox.Checked)
                 {
-                    // TODO: Subscribe
                     string email = emailTextBox.Text;
 
-                    // 
-                    statusLabel.Text = $"Succesfully subscribed {email}!";
+                    if (doesEmailExistInSet(email, emailSubscriptionsSet))
+                    {
+                        newStatusLabel += $"\nOops, {email} already exists.";
+                    }
+                    else
+                    {
+                        // Add the contact to subscriptionSet, then subscribe.
+                        SendViaEmail subscriptionByEmail = new SendViaEmail(email);
+                        emailSubscriptionsSet.Add(subscriptionByEmail);
+                        subscriptionByEmail.Subscribe(this.publisher);
+
+                        newStatusLabel += $"\nSuccesfully subscribed {email}!";
+
+                    }
+
                 }
 
 
                 // Subscribe by sms.
                 if (notifyBySmsCheckBox.Checked)
                 {
-                    // TODO: Subscribe
                     string phoneNum = phoneTextBox.Text;
 
-                    // 
-                    statusLabel.Text += $"\nSuccesfully subscribed {phoneNum}!";
+                    if (doesPhoneNumExistInSet(phoneNum, phoneNumSubscriptionsSet))
+                    {
+                        newStatusLabel += $"\nOops, {phoneNum} already exists.";
+                    }
+                    else
+                    {
+                        // Add the contact to subscriptionSet, then subscribe.
+                        SendViaMobile subscriptionBySms = new SendViaMobile(phoneNum);
+                        phoneNumSubscriptionsSet.Add(subscriptionBySms);
+                        subscriptionBySms.Subscribe(this.publisher);
+
+                        newStatusLabel += $"\nSuccesfully subscribed {phoneNum}!";
+
+                    }
                 }
+
+
+                statusLabel.Text = newStatusLabel;
             }
         }
+
+
+
+        private static bool doesEmailExistInSet(string email, HashSet<SendViaEmail> subscriptionSet)
+        {
+            foreach (var subscription in subscriptionSet)
+            {
+                if (subscription.EmailAddr.Equals(email))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
+
+        private static bool doesPhoneNumExistInSet(string phoneNum, HashSet<SendViaMobile> subscriptionSet)
+        {
+            foreach (var subscription in subscriptionSet)
+            {
+                if (subscription.CellPhone.Equals(phoneNum))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
 
         private bool validatePhoneNum()
         {
