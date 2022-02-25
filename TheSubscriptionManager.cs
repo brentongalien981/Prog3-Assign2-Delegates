@@ -10,7 +10,7 @@ namespace BrenBaga_Lab2
     {
         private HashSet<SendViaType> emailSubscriptionSet;
         private HashSet<SendViaType> mobileSubscriptionSet;
-        private Publisher publisher;
+        public Publisher publisher;
         public TheSubscriptions TheSubscriptions;
         private List<IObserver<TheSubscriptions>> subscribers;
 

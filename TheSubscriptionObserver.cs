@@ -15,13 +15,19 @@ namespace BrenBaga_Lab2
             this.theMainForm = form1;
         }
 
+
+
         public void OnCompleted()
         {
         }
 
+
+
         public void OnError(Exception error)
         {
         }
+
+
 
         public void OnNext(TheSubscriptions theSubscriptions)
         {

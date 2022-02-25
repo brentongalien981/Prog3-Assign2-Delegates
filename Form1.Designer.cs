@@ -55,6 +55,7 @@
             this.publishNotificationBtn.TabIndex = 1;
             this.publishNotificationBtn.Text = "Publish Notification";
             this.publishNotificationBtn.UseVisualStyleBackColor = true;
+            this.publishNotificationBtn.Click += new System.EventHandler(this.publishNotificationBtn_Click);
             // 
             // exitBtn
             // 

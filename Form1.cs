@@ -40,5 +40,11 @@ namespace BrenBaga_Lab2
         {
             this.publishNotificationBtn.Enabled = shouldEnablePublishBtn;
         }
+
+        private void publishNotificationBtn_Click(object sender, EventArgs e)
+        {
+            NotificationPublisher form = new NotificationPublisher();
+            form.ShowDialog();
+        }
     }
 }
