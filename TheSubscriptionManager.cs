@@ -20,7 +20,7 @@ namespace BrenBaga_Lab2
 
         private TheSubscriptionManager()
         {
-
+            // For singleton.
         }
 
 
@@ -54,29 +54,6 @@ namespace BrenBaga_Lab2
 
 
 
-        private bool doesContactExistInSet(string subscriptionType, string contact)
-        {
-            var subscriptionSet = emailSubscriptionSet;
-
-            if (subscriptionType.Equals("mobile"))
-            {
-                subscriptionSet = mobileSubscriptionSet;
-            }
-
-
-            foreach (var subscription in subscriptionSet)
-            {
-                if (subscription.Contact.Equals(contact))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-
-
         public SubscriptionResult ProcessSubscription(string subscriptionType, string contact)
         {
             bool isWholeProcessOk = false;
@@ -96,7 +73,7 @@ namespace BrenBaga_Lab2
 
 
             // If contact already exists, return.
-            if (doesContactExistInSet(subscriptionType, contact))
+            if (TheSubscriptions.DoesContactExistInSet(subscriptionType, contact))
             {
                 resultMsg = $"Oops, {contact} already exists.";
             }
@@ -122,6 +99,65 @@ namespace BrenBaga_Lab2
                 // Successful subscription result.
                 isWholeProcessOk = true;
                 resultMsg = $"Succesfully subscribed {contact}!";
+
+            }
+
+
+            //
+            notifySubscribers();
+
+
+            // Return.
+            return new SubscriptionResult(isWholeProcessOk, resultMsg);
+        }
+
+
+
+
+        public SubscriptionResult ProcessUnsubscription(string subscriptionType, string contact)
+        {
+            bool isWholeProcessOk = false;
+            string resultMsg = "";
+
+            // Validate contact.
+            bool isContactValid = MyValidator.validate(subscriptionType, contact);
+
+
+            // If contact is invalid, return..
+            if (!isContactValid)
+            {
+                resultMsg = $"Invalid {subscriptionType}.";
+
+                return new SubscriptionResult(isWholeProcessOk, resultMsg);
+            }
+
+
+            // If contact exists, proceed unsubscription.
+            if (TheSubscriptions.DoesContactExistInSet(subscriptionType, contact))
+            {
+                // Unsubscribe from publisher and remove from specific subscriptionSet.
+                var subscription = TheSubscriptions.GetSubscription(contact, subscriptionType);
+                subscription.Unsubscribe(publisher);
+
+                if (subscriptionType.Equals("email"))
+                {
+                    // For email.                                                            
+                    emailSubscriptionSet.Remove(subscription);                    
+                }
+                else
+                {
+                    // For mobile.                    
+                    mobileSubscriptionSet.Remove(subscription);
+
+                }
+
+                // Successful subscription result.
+                isWholeProcessOk = true;
+                resultMsg = $"Succesfully unubscribed {contact}!";
+            }
+            else
+            {
+                resultMsg = $"Oops, {contact} does not exist.";
 
             }
 

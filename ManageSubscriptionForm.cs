@@ -75,96 +75,50 @@ namespace BrenBaga_Lab2
 
 
 
-        //private static SendViaEmail? getEmailSubscriptionFromSet(string email, HashSet<SendViaEmail> subscriptionSet)
-        //{
-        //    foreach (var subscription in subscriptionSet)
-        //    {
-        //        if (subscription.EmailAddr.Equals(email))
-        //        {
-        //            return subscription;
-        //        }
-        //    }
-
-        //    return null;
-        //}
-
-
-
-        //private static SendViaMobile? getSmsSubscriptionFromSet(string phoneNum, HashSet<SendViaMobile> subscriptionSet)
-        //{
-        //    foreach (var subscription in subscriptionSet)
-        //    {
-        //        if (subscription.CellPhone.Equals(phoneNum))
-        //        {
-        //            return subscription;
-        //        }
-        //    }
-
-        //    return null;
-        //}
-
-
-
         private void unsubscribeBtn_Click(object sender, EventArgs e)
         {
-            //    // Reset labels.
-            //    emailResultLabel.Text = "";
-            //    phoneResultLabel.Text = "";
-            //    statusLabel.Text = "";
+            // Reset labels.
+            emailResultLabel.Text = "";
+            phoneResultLabel.Text = "";
+
+            emailResultLabel.ForeColor = Color.Red;
+            phoneResultLabel.ForeColor = Color.Red;
+
+            // 
+            TheSubscriptionManager theSubscriptionManager = TheSubscriptionManager.getSingletonInstance();
 
 
-            //    string newStatusLabel = "";
+            // Unsubscribe email.
+            if (notifyByEmailCheckBox.Checked)
+            {
+                SubscriptionResult subscriptionResult = theSubscriptionManager.ProcessUnsubscription("email", emailTextBox.Text);
+
+                // If unsubscription is ok.
+                if (subscriptionResult.IsSuccessful)
+                {
+                    emailResultLabel.ForeColor = Color.Green;
+                }
+
+                emailResultLabel.Text = subscriptionResult.ResultMsg;
+            }
 
 
-            //    // Unsubscribe by email
-            //    if (notifyByEmailCheckBox.Checked)
-            //    {
-            //        string email = emailTextBox.Text;
+            // Unsubscribe mobile.
+            if (notifyBySmsCheckBox.Checked)
+            {
+                SubscriptionResult subscriptionResult = theSubscriptionManager.ProcessUnsubscription("mobile", phoneTextBox.Text);
 
-            //        if (doesEmailExistInSet(email, emailSubscriptionsSet))
-            //        {
-            //            // Unsubscribe the contact, then remove from subscriptionSet.
-            //            SendViaEmail? subscriptionByEmail = getEmailSubscriptionFromSet(email, emailSubscriptionsSet);
+                // If unsubscription is ok.
+                if (subscriptionResult.IsSuccessful)
+                {
+                    phoneResultLabel.ForeColor = Color.Green;
+                }
 
-            //            subscriptionByEmail?.Unsubscribe(this.publisher);
-            //            emailSubscriptionsSet.RemoveWhere(subscription => subscription.EmailAddr.Equals(email));
-
-            //            newStatusLabel += $"\nSuccesfully unsubscribed {email}!";
-            //        }
-            //        else
-            //        {
-            //            newStatusLabel += $"\nOops, {email} does not exist.";
-
-            //        }
-
-            //    }
+                phoneResultLabel.Text = subscriptionResult.ResultMsg;
+            }
 
 
-            //    // Unsubscribe by sms
-            //    if (notifyBySmsCheckBox.Checked)
-            //    {
-            //        string phoneNum = phoneTextBox.Text;
 
-            //        if (doesPhoneNumExistInSet(phoneNum, phoneNumSubscriptionsSet))
-            //        {
-            //            // Unsubscribe the contact, then remove from subscriptionSet.
-            //            SendViaMobile? subscriptionBySms = getSmsSubscriptionFromSet(phoneNum, phoneNumSubscriptionsSet);
-
-            //            subscriptionBySms?.Unsubscribe(this.publisher);
-            //            phoneNumSubscriptionsSet.RemoveWhere(subscription => subscription.CellPhone.Equals(phoneNum));
-
-            //            newStatusLabel += $"\nSuccesfully unsubscribed {phoneNum}!";
-            //        }
-            //        else
-            //        {
-            //            newStatusLabel += $"\nOops, {phoneNum} does not exist.";
-
-            //        }
-
-            //    }
-
-
-            //    statusLabel.Text = newStatusLabel;
         }
     }
 }

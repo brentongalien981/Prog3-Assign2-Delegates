@@ -23,5 +23,52 @@ namespace BrenBaga_Lab2
             EmailSubscriptionSet = emailSubscriptionSet;
             MobileSubscriptionSet = mobileSubscriptionSet;
         }
+
+
+
+        public bool DoesContactExistInSet(string subscriptionType, string contact)
+        {
+            var subscriptionSet = EmailSubscriptionSet;
+
+            if (subscriptionType.Equals("mobile"))
+            {
+                subscriptionSet = MobileSubscriptionSet;
+            }
+
+
+            foreach (var subscription in subscriptionSet)
+            {
+                if (subscription.Contact.Equals(contact))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
+
+        public SendViaType GetSubscription(string contact, string subscriptionType)
+        {
+            HashSet<SendViaType> subscriptionSet = EmailSubscriptionSet;
+
+            if (subscriptionType.Equals("mobile"))
+            {
+                subscriptionSet = MobileSubscriptionSet;
+            }
+
+
+            foreach (var subscription in subscriptionSet)
+            {
+                if (subscription.Contact.Equals(contact))
+                {
+                    return subscription;
+                }
+            }
+
+            return null;
+
+        }
     }
 }
