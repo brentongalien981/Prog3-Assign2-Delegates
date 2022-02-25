@@ -13,7 +13,7 @@ namespace BrenBaga_Lab2
 
         public void Dispose()
         {
-
+            //
         }
 
 

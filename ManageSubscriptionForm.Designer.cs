@@ -128,7 +128,7 @@
             // statusLabel
             // 
             this.statusLabel.AutoSize = true;
-            this.statusLabel.Location = new System.Drawing.Point(12, 215);
+            this.statusLabel.Location = new System.Drawing.Point(12, 211);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(22, 15);
             this.statusLabel.TabIndex = 9;
@@ -138,7 +138,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(515, 266);
+            this.ClientSize = new System.Drawing.Size(515, 235);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.unsubscribeBtn);

@@ -35,6 +35,9 @@ namespace BrenBaga_Lab2
             // Reference theSubscriptionManager.
             TheSubscriptionManager theSubscriptionManager = TheSubscriptionManager.getSingletonInstance();
 
+            // Reset labels.
+            statusLabel.Text = "";
+
             string msg = notificationContentTextBox.Text;
 
             // Show messages.
@@ -54,14 +57,14 @@ namespace BrenBaga_Lab2
 
         internal void RefreshNotificationDisplay(List<string> notifications)
         {
-            string allNotificationsStr = "";
+            notificationsListView.Items.Clear();
 
             foreach (var n in notifications)
             {
-                allNotificationsStr += n + "\n";
+                notificationsListView.Items.Add(new ListViewItem(n));
             }
 
-            statusLabel.Text = allNotificationsStr;
+            notificationsListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
     }
 }

@@ -31,6 +31,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.notificationContentTextBox = new System.Windows.Forms.TextBox();
             this.notificationsListView = new System.Windows.Forms.ListView();
+            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.label2 = new System.Windows.Forms.Label();
             this.publishBtn = new System.Windows.Forms.Button();
             this.exitBtn = new System.Windows.Forms.Button();
@@ -55,11 +56,19 @@
             // 
             // notificationsListView
             // 
+            this.notificationsListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
             this.notificationsListView.Location = new System.Drawing.Point(34, 115);
             this.notificationsListView.Name = "notificationsListView";
             this.notificationsListView.Size = new System.Drawing.Size(560, 172);
             this.notificationsListView.TabIndex = 2;
             this.notificationsListView.UseCompatibleStateImageBehavior = false;
+            this.notificationsListView.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Notifications";
+            this.columnHeader1.Width = 200;
             // 
             // label2
             // 
@@ -93,7 +102,7 @@
             // statusLabel
             // 
             this.statusLabel.AutoSize = true;
-            this.statusLabel.Location = new System.Drawing.Point(12, 295);
+            this.statusLabel.Location = new System.Drawing.Point(34, 316);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(22, 15);
             this.statusLabel.TabIndex = 6;
@@ -103,7 +112,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(638, 365);
+            this.ClientSize = new System.Drawing.Size(634, 340);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.exitBtn);
             this.Controls.Add(this.publishBtn);
@@ -127,5 +136,6 @@
         private Button publishBtn;
         private Button exitBtn;
         private Label statusLabel;
+        private ColumnHeader columnHeader1;
     }
 }

@@ -13,6 +13,8 @@ namespace BrenBaga_Lab2
 
         }
 
+
+
         public override void send(string msg)
         {
             string notification = "The message " + "\"" + msg + "\" was texted to " + Contact;
