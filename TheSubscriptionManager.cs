@@ -25,6 +25,7 @@ namespace BrenBaga_Lab2
 
 
 
+        // Use only one TheSubscriptionManager instance.
         public static TheSubscriptionManager getSingletonInstance()
         {
             if (singletonInstance == null)

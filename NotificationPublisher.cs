@@ -57,6 +57,7 @@ namespace BrenBaga_Lab2
 
         internal void RefreshNotificationDisplay(List<string> notifications)
         {
+            // Reset notificationsListView.
             notificationsListView.Items.Clear();
 
             foreach (var n in notifications)
