@@ -30,46 +30,21 @@ namespace BrenBaga_Lab2
 
         private void subscribeBtn_Click(object sender, EventArgs e)
         {
-            // Reset labels.
-            emailResultLabel.Text = "";
-            phoneResultLabel.Text = "";
-
-            emailResultLabel.ForeColor = Color.Red;
-            phoneResultLabel.ForeColor = Color.Red;
-
-            // 
-            TheSubscriptionManager theSubscriptionManager = TheSubscriptionManager.getSingletonInstance();
+            resetLabels();
 
 
-            // Process email.
+            // Subscribe email.
             if (notifyByEmailCheckBox.Checked)
             {
-                SubscriptionResult subscriptionResult = theSubscriptionManager.ProcessSubscription("email", emailTextBox.Text);
-
-                // If email is subscribed ok.
-                if (subscriptionResult.IsSuccessful)
-                {
-                    emailResultLabel.ForeColor = Color.Green;                    
-                }
-
-                emailResultLabel.Text = subscriptionResult.ResultMsg;
+                processAction("subscribe", "email", emailTextBox.Text, emailResultLabel);
             }
 
 
-            // Process mobile.
+            // Subscribe mobile.
             if (notifyBySmsCheckBox.Checked)
             {
-                SubscriptionResult subscriptionResult = theSubscriptionManager.ProcessSubscription("mobile", phoneTextBox.Text);
-
-                // If mobile is subscribed ok.
-                if (subscriptionResult.IsSuccessful)
-                {
-                    phoneResultLabel.ForeColor = Color.Green;
-                }
-
-                phoneResultLabel.Text = subscriptionResult.ResultMsg;
+                processAction("subscribe", "mobile", phoneTextBox.Text, phoneResultLabel);
             }
-
 
         }
 
@@ -77,48 +52,66 @@ namespace BrenBaga_Lab2
 
         private void unsubscribeBtn_Click(object sender, EventArgs e)
         {
-            // Reset labels.
-            emailResultLabel.Text = "";
-            phoneResultLabel.Text = "";
-
-            emailResultLabel.ForeColor = Color.Red;
-            phoneResultLabel.ForeColor = Color.Red;
-
-            // 
-            TheSubscriptionManager theSubscriptionManager = TheSubscriptionManager.getSingletonInstance();
+            resetLabels();
 
 
             // Unsubscribe email.
             if (notifyByEmailCheckBox.Checked)
             {
-                SubscriptionResult subscriptionResult = theSubscriptionManager.ProcessUnsubscription("email", emailTextBox.Text);
-
-                // If unsubscription is ok.
-                if (subscriptionResult.IsSuccessful)
-                {
-                    emailResultLabel.ForeColor = Color.Green;
-                }
-
-                emailResultLabel.Text = subscriptionResult.ResultMsg;
+                processAction("unsubscribe", "email", emailTextBox.Text, emailResultLabel);
             }
 
 
             // Unsubscribe mobile.
             if (notifyBySmsCheckBox.Checked)
             {
-                SubscriptionResult subscriptionResult = theSubscriptionManager.ProcessUnsubscription("mobile", phoneTextBox.Text);
+                processAction("unsubscribe", "mobile", phoneTextBox.Text, phoneResultLabel);
+            }
 
-                // If unsubscription is ok.
-                if (subscriptionResult.IsSuccessful)
-                {
-                    phoneResultLabel.ForeColor = Color.Green;
-                }
+        }
 
-                phoneResultLabel.Text = subscriptionResult.ResultMsg;
+
+
+        private void resetLabels()
+        {
+            emailResultLabel.Text = "";
+            phoneResultLabel.Text = "";
+
+            emailResultLabel.ForeColor = Color.Red;
+            phoneResultLabel.ForeColor = Color.Red;
+        }
+
+
+
+        private void processAction(string processType, string contactType, string contact, Label resultLabel)
+        {
+            // Reference theSubscriptionManager.
+            TheSubscriptionManager theSubscriptionManager = TheSubscriptionManager.getSingletonInstance();
+
+            SubscriptionResult processResult;
+
+            if (processType.Equals("subscribe"))
+            {
+                // Subscribe.
+                processResult = theSubscriptionManager.ProcessSubscription(contactType, contact);
+            }
+            else
+            {
+                // Unsubscribe.
+                processResult = theSubscriptionManager.ProcessUnsubscription(contactType, contact);
+            }
+            
+
+            // If result is ok.
+            if (processResult.IsSuccessful)
+            {
+                resultLabel.ForeColor = Color.Green;
             }
 
 
-
+            // Set label.
+            resultLabel.Text = processResult.ResultMsg;
         }
+
     }
 }
