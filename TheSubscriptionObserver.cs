@@ -31,6 +31,7 @@ namespace BrenBaga_Lab2
 
         public void OnNext(TheSubscriptions theSubscriptions)
         {
+            // Enable or disable the publish-btn depending on the number of subscribers.
             bool shouldEnablePublishBtn = false;
 
             if (theSubscriptions.EmailSubscriptionSet.Count > 0 || theSubscriptions.MobileSubscriptionSet.Count > 0)

@@ -29,7 +29,8 @@ namespace BrenBaga_Lab2
 
         public virtual void send(string msg)
         {
-            Console.WriteLine("The message" + "\"" + msg + "\" was sent to " + Contact);
+            string notification = "The message" + "\"" + msg + "\" was sent to " + Contact;
+            NotificationsDisplayManager.DisplayNotification(notification);
         }
 
 

@@ -15,7 +15,8 @@ namespace BrenBaga_Lab2
 
         public override void send(string msg)
         {
-            Console.WriteLine("The message " + "\"" + msg + "\" was texted to " + Contact);
+            string notification = "The message " + "\"" + msg + "\" was texted to " + Contact;
+            NotificationsDisplayManager.DisplayNotification(notification);
         }
     }
 }

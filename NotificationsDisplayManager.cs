@@ -9,14 +9,28 @@ namespace BrenBaga_Lab2
     internal class NotificationsDisplayManager
     {
         private static List<string> notifications = new List<string>();
+        private static NotificationPublisher notificationPublisherWindow;
 
 
 
-        public static void Display()
+        public static void ResetNotifications()
         {
-            // TODO: This will be called by the SendViaType's send() method.
+            notifications.Clear();
+        }
 
-            // TODO: This should also reference the notificationListView to display stuffs.
+
+
+        public static void SetNotificationPublisherWindow(NotificationPublisher theWindow)
+        {
+            notificationPublisherWindow = theWindow;
+        }
+
+
+
+        public static void DisplayNotification(string msg)
+        {
+            notifications.Add(msg);
+            notificationPublisherWindow.RefreshNotificationDisplay(notifications);
         }
     }
 }

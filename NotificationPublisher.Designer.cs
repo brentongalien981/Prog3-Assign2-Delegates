@@ -93,7 +93,7 @@
             // statusLabel
             // 
             this.statusLabel.AutoSize = true;
-            this.statusLabel.Location = new System.Drawing.Point(12, 341);
+            this.statusLabel.Location = new System.Drawing.Point(12, 295);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(22, 15);
             this.statusLabel.TabIndex = 6;
