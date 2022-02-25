@@ -5,6 +5,11 @@ namespace BrenBaga_Lab2
         public Form1()
         {
             InitializeComponent();
+
+            // Initialize this MainForm to observe for the number of subscriptions,
+            // so that you can enable or disable the publish-button.
+            TheSubscriptionObserver theObserver = new TheSubscriptionObserver(this);
+            TheSubscriptionManager.getSingletonInstance().Subscribe(theObserver);
         }
 
 
@@ -15,9 +20,25 @@ namespace BrenBaga_Lab2
             frm.ShowDialog();
         }
 
+
+
         private void exitBtn_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+
+
+        internal void SetMainStatusLabel(string newLabel)
+        {
+            this.mainStatusLabel.Text = newLabel;
+        }
+
+
+
+        internal void SetPublishBtn(bool shouldEnablePublishBtn)
+        {
+            this.publishNotificationBtn.Enabled = shouldEnablePublishBtn;
         }
     }
 }

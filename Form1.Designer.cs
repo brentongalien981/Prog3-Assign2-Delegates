@@ -31,6 +31,7 @@
             this.manageSubscriptionBtn = new System.Windows.Forms.Button();
             this.publishNotificationBtn = new System.Windows.Forms.Button();
             this.exitBtn = new System.Windows.Forms.Button();
+            this.mainStatusLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // manageSubscriptionBtn
@@ -47,6 +48,7 @@
             // publishNotificationBtn
             // 
             this.publishNotificationBtn.AutoSize = true;
+            this.publishNotificationBtn.Enabled = false;
             this.publishNotificationBtn.Location = new System.Drawing.Point(200, 39);
             this.publishNotificationBtn.Name = "publishNotificationBtn";
             this.publishNotificationBtn.Size = new System.Drawing.Size(122, 25);
@@ -65,11 +67,21 @@
             this.exitBtn.UseVisualStyleBackColor = true;
             this.exitBtn.Click += new System.EventHandler(this.exitBtn_Click);
             // 
+            // mainStatusLabel
+            // 
+            this.mainStatusLabel.AutoSize = true;
+            this.mainStatusLabel.Location = new System.Drawing.Point(12, 110);
+            this.mainStatusLabel.Name = "mainStatusLabel";
+            this.mainStatusLabel.Size = new System.Drawing.Size(22, 15);
+            this.mainStatusLabel.TabIndex = 3;
+            this.mainStatusLabel.Text = "---";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(480, 102);
+            this.ClientSize = new System.Drawing.Size(494, 134);
+            this.Controls.Add(this.mainStatusLabel);
             this.Controls.Add(this.exitBtn);
             this.Controls.Add(this.publishNotificationBtn);
             this.Controls.Add(this.manageSubscriptionBtn);
@@ -85,5 +97,6 @@
         private Button manageSubscriptionBtn;
         private Button publishNotificationBtn;
         private Button exitBtn;
+        private Label mainStatusLabel;
     }
 }

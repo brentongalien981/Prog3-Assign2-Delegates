@@ -125,8 +125,23 @@ namespace BrenBaga_Lab2
 
             }
 
+
+            //
+            notifySubscribers();
+
+
             // Return.
             return new SubscriptionResult(isWholeProcessOk, resultMsg);
+        }
+
+
+
+        private void notifySubscribers()
+        {
+            foreach (var s in subscribers)
+            {
+                s.OnNext(TheSubscriptions);
+            }
         }
     }
 }

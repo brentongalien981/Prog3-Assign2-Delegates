@@ -8,8 +8,8 @@ namespace BrenBaga_Lab2
 {
     internal class TheSubscriptions : IDisposable
     {
-        public static HashSet<SendViaType>? EmailSubscriptionSet { get; set; }
-        public static HashSet<SendViaType>? MobileSubscriptionSet { get; set; }
+        public HashSet<SendViaType>? EmailSubscriptionSet { get; set; }
+        public HashSet<SendViaType>? MobileSubscriptionSet { get; set; }
 
         public void Dispose()
         {
