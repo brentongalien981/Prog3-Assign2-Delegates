@@ -33,18 +33,20 @@ namespace BrenBaga_Lab2
             // Reset labels.
             emailResultLabel.Text = "";
             phoneResultLabel.Text = "";
-            statusLabel.Text = "";
 
             emailResultLabel.ForeColor = Color.Red;
             phoneResultLabel.ForeColor = Color.Red;
+
+            // 
+            TheSubscriptionManager theSubscriptionManager = TheSubscriptionManager.getSingletonInstance();
 
 
             // Process email.
             if (notifyByEmailCheckBox.Checked)
             {
-                SubscriptionResult subscriptionResult = TheSubscriptionManager.ProcessSubscription("email", emailTextBox.Text);
+                SubscriptionResult subscriptionResult = theSubscriptionManager.ProcessSubscription("email", emailTextBox.Text);
 
-                // If email is subscribed.
+                // If email is subscribed ok.
                 if (subscriptionResult.IsSuccessful)
                 {
                     emailResultLabel.ForeColor = Color.Green;                    
@@ -57,9 +59,9 @@ namespace BrenBaga_Lab2
             // Process mobile.
             if (notifyBySmsCheckBox.Checked)
             {
-                SubscriptionResult subscriptionResult = TheSubscriptionManager.ProcessSubscription("mobile", phoneTextBox.Text);
+                SubscriptionResult subscriptionResult = theSubscriptionManager.ProcessSubscription("mobile", phoneTextBox.Text);
 
-                // If mobile is subscribed.
+                // If mobile is subscribed ok.
                 if (subscriptionResult.IsSuccessful)
                 {
                     phoneResultLabel.ForeColor = Color.Green;

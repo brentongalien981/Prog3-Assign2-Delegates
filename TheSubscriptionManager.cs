@@ -6,22 +6,55 @@ using System.Threading.Tasks;
 
 namespace BrenBaga_Lab2
 {
-    internal class TheSubscriptionManager : IObservable<HashSet<SendViaType>>
+    internal class TheSubscriptionManager : IObservable<TheSubscriptions>
     {
-        private static HashSet<SendViaType> emailSubscriptionSet = new HashSet<SendViaType>();
-        private static HashSet<SendViaType> mobileSubscriptionSet = new HashSet<SendViaType>();
-        private static Publisher publisher = new Publisher();
+        private HashSet<SendViaType> emailSubscriptionSet;
+        private HashSet<SendViaType> mobileSubscriptionSet;
+        private Publisher publisher;
+        public TheSubscriptions TheSubscriptions;
+        private List<IObserver<TheSubscriptions>> subscribers;
+
+        private static TheSubscriptionManager singletonInstance;
 
 
 
-        public IDisposable Subscribe(IObserver<HashSet<SendViaType>> observer)
+        private TheSubscriptionManager()
         {
-            throw new NotImplementedException();
+
         }
 
 
 
-        private static bool doesContactExistInSet(string subscriptionType, string contact)
+        public static TheSubscriptionManager getSingletonInstance()
+        {
+            if (singletonInstance == null)
+            {
+                singletonInstance = new TheSubscriptionManager();
+                singletonInstance.emailSubscriptionSet = new HashSet<SendViaType>();
+                singletonInstance.mobileSubscriptionSet = new HashSet<SendViaType>();
+                singletonInstance.TheSubscriptions = new TheSubscriptions(singletonInstance.emailSubscriptionSet, singletonInstance.mobileSubscriptionSet);
+                singletonInstance.publisher = new Publisher();
+                singletonInstance.subscribers = new List<IObserver<TheSubscriptions>>();
+            }
+
+            return singletonInstance;
+        }
+
+
+
+        public IDisposable Subscribe(IObserver<TheSubscriptions> observer)
+        {
+            if (!subscribers.Contains(observer))
+            {
+                subscribers.Add(observer);
+            }
+
+            return TheSubscriptions;
+        }
+
+
+
+        private bool doesContactExistInSet(string subscriptionType, string contact)
         {
             var subscriptionSet = emailSubscriptionSet;
 
@@ -44,7 +77,7 @@ namespace BrenBaga_Lab2
 
 
 
-        public static SubscriptionResult ProcessSubscription(string subscriptionType, string contact)
+        public SubscriptionResult ProcessSubscription(string subscriptionType, string contact)
         {
             bool isWholeProcessOk = false;
             string resultMsg = "";
@@ -68,7 +101,7 @@ namespace BrenBaga_Lab2
                 resultMsg = $"Oops, {contact} already exists.";
             }
             else
-            {                
+            {
                 // Add to specific subscriptionSet and subscribe to publisher.
                 if (subscriptionType.Equals("email"))
                 {
@@ -86,7 +119,7 @@ namespace BrenBaga_Lab2
 
                 }
 
-                //
+                // Successful subscription result.
                 isWholeProcessOk = true;
                 resultMsg = $"Succesfully subscribed {contact}!";
 

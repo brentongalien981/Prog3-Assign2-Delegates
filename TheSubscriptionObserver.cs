@@ -6,7 +6,19 @@ using System.Threading.Tasks;
 
 namespace BrenBaga_Lab2
 {
-    internal class TheSubscriptionObserver
+    internal class TheSubscriptionObserver : IObserver<TheSubscriptions>
     {
+        public void OnCompleted()
+        {
+        }
+
+        public void OnError(Exception error)
+        {
+        }
+
+        public void OnNext(TheSubscriptions theSubscriptions)
+        {
+            
+        }
     }
 }
